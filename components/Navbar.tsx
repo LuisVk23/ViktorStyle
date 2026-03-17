@@ -17,7 +17,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0)
+  const totalItems = cart.reduce((ac: number, item: any) => {
+    return acc + item.quantity 
+  }, 0)
 
   return (
     <header
