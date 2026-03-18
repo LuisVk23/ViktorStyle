@@ -3,19 +3,24 @@ import mongoose from "mongoose"
 const MONGODB_URI = process.env.MONGODB_URI!
 
 if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI não definida no .env.local")
+  throw new Error("MONGODB_URI não definida")
+}
+
+let cached = (global as any).mongoose
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null }
 }
 
 export async function connectDB() {
-  try {
-    if (mongoose.connection.readyState >= 1) {
-      return
-    }
+  if (cached.conn) return cached.conn
 
-    await mongoose.connect(MONGODB_URI)
-    console.log("✅ Conectado ao MongoDB")
-  } catch (error) {
-    console.error("❌ Erro ao conectar no MongoDB:", error)
-    throw error
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      dbName: "viktorstyle", // 🔥 FORÇA O BANCO CERTO
+    }).then((mongoose) => mongoose)
   }
+
+  cached.conn = await cached.promise
+  return cached.conn
 }
