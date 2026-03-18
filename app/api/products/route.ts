@@ -12,6 +12,7 @@ export async function GET() {
   } catch (error) {
     console.error("ERRO API:", error)
 
-    return NextResponse.json([], { status: 200 }) // 🔥 NÃO QUEBRA O FRONT
+    // 🔥 IMPORTANTE: nunca quebrar o frontend
+    return NextResponse.json([])
   }
 }
