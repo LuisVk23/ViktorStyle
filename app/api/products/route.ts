@@ -1,18 +1,22 @@
 import { connectDB } from "@/lib/mongodb"
-import Product from "@/models/Product"
+import mongoose from "mongoose"
 import { NextResponse } from "next/server"
 
 export async function GET() {
   try {
     await connectDB()
 
-    const products = await Product.find({})
+    const dbName = mongoose.connection.name
+    const collections = await mongoose.connection.db.listCollections().toArray()
 
-    return NextResponse.json(products)
+    return NextResponse.json({
+      database: dbName,
+      collections: collections.map((c) => c.name),
+    })
   } catch (error) {
-    console.error("ERRO API:", error)
-
-    // 🔥 IMPORTANTE: nunca quebrar o frontend
-    return NextResponse.json([])
+    return NextResponse.json(
+      { error: "Erro ao conectar" },
+      { status: 500 }
+    )
   }
 }
