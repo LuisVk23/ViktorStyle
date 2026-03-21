@@ -1,36 +1,18 @@
-"use client"
+export const dynamic = "force-dynamic"
 
 import Image from "next/image"
-import { useEffect, useState } from "react"
-import { useCart } from "@/context/CartContext"
+import { connectDB } from "@/lib/mongodb"
+import Product from "@/models/Product"
 
-export default function ProductsPage() {
+async function getProducts() {
+  await connectDB()
+  const products = await Product.find({})
+  return JSON.parse(JSON.stringify(products))
+}
 
-  const [products, setProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export default async function ProductsPage() {
 
-  const { addToCart } = useCart()
-
-  useEffect(() => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setProducts(data)
-        } else {
-          setProducts([])
-        }
-        setLoading(false)
-      })
-      .catch(() => {
-        setProducts([])
-        setLoading(false)
-      })
-  }, [])
-
-  if (loading) {
-    return <p className="p-10">Carregando produtos...</p>
-  }
+  const products = await getProducts()
 
   return (
     <div className="max-w-7xl mx-auto p-10">
@@ -49,34 +31,19 @@ export default function ProductsPage() {
 
           <div key={product._id} className="group">
 
-            {/* IMAGEM */}
             <div className="relative w-full h-[420px] bg-gray-100 overflow-hidden">
 
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
-                className="object-cover group-hover:scale-105 transition"
+                className="object-cover"
               />
-
-              {/* BOTÃO */}
-              <button
-                onClick={() => addToCart(product)}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 
-                bg-black text-white px-6 py-2 rounded opacity-0 
-                group-hover:opacity-100 transition"
-              >
-                Adicionar ao Carrinho
-              </button>
 
             </div>
 
-            {/* INFO */}
             <div className="mt-4">
-
-              <p className="text-sm text-gray-500">
-                ViktorStyle
-              </p>
+              <p className="text-sm text-gray-500">ViktorStyle</p>
 
               <h2 className="font-medium">
                 {product.name}
@@ -89,7 +56,6 @@ export default function ProductsPage() {
               <p className="text-sm text-gray-500">
                 6x de R$ {(product.price / 6).toFixed(2)}
               </p>
-
             </div>
 
           </div>
