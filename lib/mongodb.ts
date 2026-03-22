@@ -17,8 +17,8 @@ export async function connectDB() {
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "viktorstyle", // 🔥 FORÇA O BANCO CERTO
-    }).then((mongoose) => mongoose)
+      bufferCommands: false,
+    })
   }
 
   cached.conn = await cached.promise

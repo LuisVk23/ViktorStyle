@@ -1,15 +1,19 @@
 import mongoose from "mongoose"
 
-const ProductSchema = new mongoose.Schema(
-  {
-    name: String,
-    price: Number,
-    image: String,
+const ProductSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-)
+  price: {
+    type: Number,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+})
 
-const Product =
-  mongoose.models.Product || mongoose.model("Product", ProductSchema)
-
-export default Product
+// 🔥 ESSENCIAL PRA VERCEL
+export default mongoose.models.Product || mongoose.model("Product", ProductSchema)

@@ -2,6 +2,8 @@ import { connectDB } from "@/lib/mongodb"
 import Product from "@/models/Product"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
   try {
     await connectDB()
@@ -12,7 +14,9 @@ export async function GET() {
   } catch (error) {
     console.error("ERRO API:", error)
 
-    // 🔥 IMPORTANTE: nunca quebrar o frontend
-    return NextResponse.json([])
+    return NextResponse.json(
+      { error: "Erro ao buscar produtos" },
+      { status: 500 }
+    )
   }
 }
