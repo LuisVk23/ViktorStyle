@@ -1,19 +1,11 @@
 import mongoose from "mongoose"
 
 const ProductSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
+  name: String,
+  price: Number,
+  image: String,
 })
 
-// 🔥 ESSENCIAL PRA VERCEL
-export default mongoose.models.Product || mongoose.model("Product", ProductSchema)
+// 🔥 evita erro de model duplicado na Vercel
+export default mongoose.models.Product ||
+  mongoose.model("Product", ProductSchema)

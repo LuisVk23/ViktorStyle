@@ -6,6 +6,7 @@ if (!MONGODB_URI) {
   throw new Error("MONGODB_URI não definida")
 }
 
+// 🔥 Cache global (ESSENCIAL pra Vercel)
 let cached = (global as any).mongoose
 
 if (!cached) {
