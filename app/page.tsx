@@ -6,14 +6,14 @@ export default function Home() {
     <main className="scroll-smooth">
 
       {/* HERO SECTION */}
-      <section className="relative w-full h-screen bg-black pt-20">
+      <section className="relative w-full h-screen">
 
         <Image
           src="/hero2.jpg"
           alt="ViktorStyle Fashion"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center -z-10"
         />
 
         <div className="absolute inset-0 bg-black/40" />
@@ -100,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-    {/* MODA FEMININA */}
+      {/* MODA FEMININA */}
       <section className="py-20 px-6 bg-white">
 
         <h2 className="text-3xl font-bold text-center mb-10">
